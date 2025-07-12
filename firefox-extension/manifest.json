@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Banking Agent Widget",
+  "version": "1.0",
+  "description": "Injects a smart banking agent widget into your banking page.",
+  "icons": {
+    "48": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://xpressnext3-ite-banking.celeroxpress.ca/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "activeTab",
+    "https://api.openai.com/"
+  ]
+} 

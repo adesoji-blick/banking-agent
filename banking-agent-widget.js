@@ -5,7 +5,7 @@
   Description: Injects a chat bubble and sidebar UI that connects to OpenAI and interacts with DOM elements
 */
 
-(function() {
+(function () {
   // ---- Configuration ----
   const OPENAI_API_KEY = window.OPENAI_API_KEY || "<OPENAI_API_KEY>";
   const MODEL = "gpt-4"; // or "gpt-3.5-turbo" if needed
@@ -41,6 +41,34 @@
   };
 
   document.body.appendChild(bubble);
+  bubble.style.cssText = "position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#00524f;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;font-size:28px;font-weight:bold;user-select:none;";
+
+  bubble.onmousedown = function (e) {
+    e.preventDefault();
+    let shiftX = e.clientX - bubble.getBoundingClientRect().left;
+    let shiftY = e.clientY - bubble.getBoundingClientRect().top;
+
+    function moveAt(pageX, pageY) {
+      bubble.style.left = pageX - shiftX + "px";
+      bubble.style.top = pageY - shiftY + "px";
+      bubble.style.right = "auto";
+      bubble.style.bottom = "auto";
+    }
+
+    function onMouseMove(e) {
+      moveAt(e.pageX, e.pageY);
+    }
+
+    document.addEventListener("mousemove", onMouseMove);
+
+    bubble.onmouseup = function () {
+      document.removeEventListener("mousemove", onMouseMove);
+      bubble.onmouseup = null;
+    };
+  };
+
+  bubble.ondragstart = () => false;
+
   document.body.appendChild(chatbox);
   document.body.appendChild(sidebar);
 
